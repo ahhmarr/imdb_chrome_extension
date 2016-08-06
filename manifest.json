@@ -2,7 +2,7 @@
 	"manifest_version"	: 2,
 	"name" 	: "IMDB Ratings Viewer",
 	"description" : "This extension will display the ratings of the movie selected",
-	"version":"1.0",
+	"version":"1.1",
 	"browser_action" : {
 		"default_icon" : {
 			"19" : "images/19.png",
