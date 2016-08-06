@@ -9,7 +9,6 @@ window.onload=function()
 			callExtension({start:true});
 			get('https://imdb.mgsplay.club/api/'+text,function(resp)
 			{
-				console.log(resp);
 				if(resp.rating){
 					callExtension({imdb:resp});
 				}
@@ -34,8 +33,6 @@ function get(url,callBack)
 function callExtension(msg){
 	chrome.runtime.sendMessage(msg,function(resp)
 	{
-		console.log('received message=====');
-		console.log(resp);
-	})
+	});
 }
 // alert('called');
