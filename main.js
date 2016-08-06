@@ -1,20 +1,23 @@
-
 window.onload=function()
 {
 	var body=document.querySelector("body");
-	document.addEventListener("click",function()
-	{
-		var text=window.getSelection().toString();
-		if(text){
-			callExtension({start:true});
-			get('https://imdb.mgsplay.club/api/'+text,function(resp)
-			{
-				if(resp.rating){
-					callExtension({imdb:resp});
-				}
-			})
-		}
-	})
+	document.addEventListener("mouseup",eventListener)
+	// document.addEventListener("ondblclick",eventListener)
+}
+function eventListener()
+{
+	var text=window.getSelection().toString();
+	if(text){
+		callExtension({start:true});
+		get('https://imdb.mgsplay.club/api/'+text,function(resp)
+		{
+			if(resp.rating){
+				callExtension({imdb:resp});
+			}
+		})
+	}/*else{
+		callExtension({clear:true})
+	}*/
 }
 function get(url,callBack)
 {

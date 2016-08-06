@@ -1,20 +1,22 @@
+var URL='';
 chrome.runtime.onMessage.addListener(function(req,sender,sendResponse)
 {
 	if(req.start){
-		setBadgeText('...','#2EABFE');
+		setBadgeText('...',sender.tab.id,'#2EABFE');
 	}
 	if(req.imdb){
-		changeURL(req.imdb.url);
+		URL=req.imdb.url;
+		changeURL();
 		setTitle(req.imdb.rating.name);
-		setBadgeWithRatingColor(req.imdb.rating.rating);
+		setBadgeWithRatingColor(req.imdb.rating.rating,sender.tab.id);
 	}
 	if(req.clear){
-		setBadgeText('');
+		setBadgeText('',sender.tab.id);
 
 	}
 	
 });
-function setBadgeWithRatingColor(rating){
+function setBadgeWithRatingColor(rating,tabId){
 	rating=parseFloat(rating);
 	if(isNaN(rating)){
 		setBadgeText('');
@@ -50,20 +52,23 @@ function setBadgeWithRatingColor(rating){
 	else{
 		color = pallatte.h;
 	}
-	setBadgeText((rating).toString(),color);
+	setBadgeText((rating).toString(),tabId,color);
 }
 function setTitle(text){
 	chrome.browserAction.setTitle({title:text});
 }
-function setBadgeText(text,bgColor){
-	chrome.browserAction.setBadgeText({text:text});
+function setBadgeText(text,tabId,bgColor){
+	chrome.browserAction.setBadgeText({tabId:tabId,text:text});
 	if(bgColor){
 		chrome.browserAction.setBadgeBackgroundColor({color:bgColor})
 	}
 }
-function changeURL(url){
-	chrome.browserAction.onClicked.addListener(function(activeTab)
-	{
-		chrome.tabs.create({url:url});
-	})
+
+function clickListen()
+{
+	chrome.tabs.create({url:URL});
+}
+function changeURL(){
+	chrome.browserAction.onClicked.removeListener(clickListen);
+	chrome.browserAction.onClicked.addListener(clickListen)
 }
